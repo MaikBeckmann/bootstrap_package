@@ -54,10 +54,17 @@ class SvgUtility
                 return '';
             }
 
-            // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
-            $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-            $svgElement = simplexml_load_string($svgContent);
-            libxml_disable_entity_loader($previousValueOfEntityLoader);
+            if (\PHP_VERSION_ID < 80000) {
+                // Disables the functionality to allow external entities to be
+                // loaded when parsing the XML, must be kept
+                $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
+                $svgElement = simplexml_load_string($svgContent);
+                libxml_disable_entity_loader($previousValueOfEntityLoader);
+            } else {
+                // PHP 8 deprecated libxml_disable_entity_loader anymore, since
+                // it is no longer needed as of PHP 8.
+                $svgElement = simplexml_load_string($svgContent);
+            }
             if (!$svgElement instanceof \SimpleXMLElement) {
                 return '';
             }
