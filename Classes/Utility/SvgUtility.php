@@ -54,6 +54,7 @@ class SvgUtility
                 return '';
             }
 
+            $svgElement = null;
             if (\PHP_VERSION_ID < 80000) {
                 // Disables the functionality to allow external entities to be
                 // loaded when parsing the XML, must be kept
